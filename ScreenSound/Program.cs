@@ -5,7 +5,7 @@ using ScreenSound.Modelos;
 try
 {
     using var connection = new Connection().ObterConexao();
-    connection.Open();
+    connection.Open();s
     Console.WriteLine(connection.State); //retorna o estado da conexão, se está aberta ou fechada
 }
 catch (Exception e)
