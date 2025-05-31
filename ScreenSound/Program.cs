@@ -4,9 +4,13 @@ using ScreenSound.Modelos;
 
 try
 {
-    using var connection = new Connection().ObterConexao();
-    connection.Open();s
-    Console.WriteLine(connection.State); //retorna o estado da conexão, se está aberta ou fechada
+    var connection = new Connection();
+    var listaDeArtistas = connection.Listar();
+
+    foreach (var artista in listaDeArtistas)
+    {
+        Console.WriteLine($"Id: {artista.Id}, Nome: {artista.Nome}, Bio: {artista.Bio}, Foto: {artista.FotoPerfil}");
+    }
 }
 catch (Exception e)
 {
