@@ -4,8 +4,9 @@ using ScreenSound.Modelos;
 
 try
 {
-    var connection = new Connection();
-    var listaDeArtistas = connection.Listar();
+    var artistaDal = new ArtistaDAL();
+    artistaDal.Adicionar(new Artista("Deftones!", "Melhor Banda de Rock Gringo") { FotoPerfil = "deftones.jpg" });
+    var listaDeArtistas = artistaDal.Listar();
 
     foreach (var artista in listaDeArtistas)
     {
