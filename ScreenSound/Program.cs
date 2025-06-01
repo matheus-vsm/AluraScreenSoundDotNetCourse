@@ -12,6 +12,20 @@ try
     {
         Console.WriteLine($"Id: {artista.Id}, Nome: {artista.Nome}, Bio: {artista.Bio}, Foto: {artista.FotoPerfil}");
     }
+
+    artistaDal.Deletar(1006);
+    listaDeArtistas = artistaDal.Listar();
+    foreach (var artista in listaDeArtistas)
+    {
+        Console.WriteLine($"Id: {artista.Id}, Nome: {artista.Nome}, Bio: {artista.Bio}, Foto: {artista.FotoPerfil}");
+    }
+
+    artistaDal.Atualizar(new Artista("Charlie Brown Jr", "Melhor Banda de Rock BR") { Id = 1007, FotoPerfil = "cbjr.jpg" });
+    listaDeArtistas = artistaDal.Listar();
+    foreach (var artista in listaDeArtistas)
+    {
+        Console.WriteLine($"Id: {artista.Id}, Nome: {artista.Nome}, Bio: {artista.Bio}, Foto: {artista.FotoPerfil}");
+    }
 }
 catch (Exception e)
 {
