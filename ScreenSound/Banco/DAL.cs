@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScreenSound.Banco
 {
-    internal abstract class DAL<T> where T : class //define que os TIPOS são CLASSES
-                                                   //nao cria nenhum objeto, apenas define o que deve ser implementado nas classes que herdam dela
+    internal class DAL<T> where T : class //define que os TIPOS são CLASSES
     {
         protected readonly ScreenSoundContext context; //para conseguir ser acessado pelas classes que herdam dela, o contexto do banco de dados deve ser protegido (protected) e somente leitura (readonly)
 
@@ -38,6 +37,11 @@ namespace ScreenSound.Banco
         {
             context.Set<T>().Update(objeto);
             context.SaveChanges();
+        }
+
+        public T? RecuperarPor(Func<T, bool> condicao)
+        {
+            return context.Set<T>().FirstOrDefault(condicao); //retorna o primeiro objeto que atende a condição especificada ou null se nenhum objeto atender
         }
     }
 }
