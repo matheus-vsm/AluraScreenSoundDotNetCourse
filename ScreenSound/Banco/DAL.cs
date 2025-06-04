@@ -11,7 +11,7 @@ namespace ScreenSound.Banco
     {
         protected readonly ScreenSoundContext context; //para conseguir ser acessado pelas classes que herdam dela, o contexto do banco de dados deve ser protegido (protected) e somente leitura (readonly)
 
-        protected DAL(ScreenSoundContext context)
+        public DAL(ScreenSoundContext context)
         {
             this.context = context;
         }
