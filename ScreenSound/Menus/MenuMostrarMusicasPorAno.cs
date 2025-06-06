@@ -20,7 +20,7 @@ internal class MenuMostrarMusicasPorAno : Menu
             Console.WriteLine($"\nMúsicas de {ano}:");
             foreach (var musica in musicasAno)
             {
-                musica.ExibirFichaTecnica(); 
+                musica.ExibirFichaTecnica();
             }
             Console.WriteLine("\nDigite uma tecla para voltar ao menu principal");
         }
