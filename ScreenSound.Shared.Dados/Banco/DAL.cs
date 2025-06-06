@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ScreenSound.Banco
 {
-    internal class DAL<T> where T : class //define que os TIPOS são CLASSES
+    public class DAL<T> where T : class //define que os TIPOS são CLASSES
     {
-        protected readonly ScreenSoundContext context; //para conseguir ser acessado pelas classes que herdam dela, o contexto do banco de dados deve ser protegido (protected) e somente leitura (readonly)
+        private readonly ScreenSoundContext context; //para conseguir ser acessado pelas classes que herdam dela
 
         public DAL(ScreenSoundContext context)
         {
