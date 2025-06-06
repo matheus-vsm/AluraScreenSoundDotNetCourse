@@ -43,5 +43,10 @@ namespace ScreenSound.Banco
         {
             return context.Set<T>().FirstOrDefault(condicao); //retorna o primeiro objeto que atende a condição especificada ou null se nenhum objeto atender
         }
+
+        public IEnumerable<T> ListarPorAno(Func<T, bool> condicao)
+        {
+            return context.Set<T>().Where(condicao).ToList(); 
+        }
     }
 }
