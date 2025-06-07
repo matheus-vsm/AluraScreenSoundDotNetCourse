@@ -8,6 +8,7 @@ public class Artista
     public int Id { get; set; }
     public virtual ICollection<Musica> Musicas { get; set; } = new List<Musica>();
 
+    public Artista() { }
     public Artista(string nome, string bio)
     {
         Nome = nome;
