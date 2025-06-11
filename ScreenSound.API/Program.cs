@@ -1,23 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
+using System.Data.SqlTypes;
 using System.Text.Json.Serialization;
 
+//[FromBody]: recebe dados enviados pelo cliente no corpo da requisição (ex: JSON).
+
+//[FromServices]: injeta serviços do container de dependência (ex: classes de negócio ou repositórios).
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ScreenSoundContext>(); // Registra o contexto do banco de dados no contêiner de injeção de dependência
+builder.Services.AddTransient<DAL<Artista>>(); // Registra a classe DAL para o tipo Artista como um serviço transitório
 
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); // Configura o JsonOptions para ignorar ciclos de referência
 
 var app = builder.Build();
 
-app.MapGet("/Artistas", () =>
+//Listar Todos os Artistas
+app.MapGet("/Artistas", ([FromServices] DAL<Artista> dal) =>
 {
-    var dal = new DAL<Artista>(new ScreenSoundContext());
     return Results.Ok(dal.Listar());
 });
 
-app.MapGet("/Artistas/{nome}", (string nome) =>
+//Listar Artistas
+app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> dal, string nome) =>
 {
-    var dal = new DAL<Artista>(new ScreenSoundContext());
     var artista = dal.RecuperarPor(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
     if (artista == null)
     {
@@ -26,9 +34,9 @@ app.MapGet("/Artistas/{nome}", (string nome) =>
     return Results.Ok(artista);
 });
 
-app.MapPost("/Artistas", ([FromBody]Artista artista) =>
+//Cadastrar Artista
+app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody]Artista artista) =>
 {
-    var dal = new DAL<Artista>(new ScreenSoundContext());
     dal.Adicionar(artista);
     return Results.Ok();
 });
