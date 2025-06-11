@@ -41,4 +41,18 @@ app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody]Artista art
     return Results.Ok();
 });
 
+//Deletar Artista
+app.MapDelete("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>
+{
+    var artista = dal.RecuperarPor(a => a.Id == id);
+    if (artista == null)
+    {
+        return Results.NotFound($"O Artista com ID {id} não foi encontrado.");
+    }
+    dal.Deletar(artista);
+    return Results.Ok();
+});
+
+
+
 app.Run();
