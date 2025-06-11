@@ -11,6 +11,7 @@ public class Musica
     {
         Nome = nome;
     }
+    public Musica() { }
 
     public void ExibirFichaTecnica()
     {
