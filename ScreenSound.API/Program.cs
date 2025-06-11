@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 
 //[FromServices]: injeta serviços do container de dependência (ex: classes de negócio ou repositórios).
 
+//MapGet , MapPost, MapPut, MapDelete: mapeiam rotas HTTP para métodos específicos (GET(CONSULTA), POST(INSERÇÃO), PUT(ATUALIZAÇÃO), DELETE(REMOÇÃO)).
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ScreenSoundContext>(); // Registra o contexto do banco de dados no contêiner de injeção de dependência
@@ -53,6 +55,20 @@ app.MapDelete("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>
     return Results.Ok();
 });
 
+//Atualizar Artista
+app.MapPut("Artistas", ([FromServices] DAL<Artista> dal, [FromBody] Artista artista) =>
+{
+    var artistaExistente = dal.RecuperarPor(a => a.Id == artista.Id);
+    if (artistaExistente == null)
+    {
+        return Results.NotFound($"O Artista com ID {artista.Id} não foi encontrado.");
+    }
+    artistaExistente.Nome = artista.Nome;
+    artistaExistente.FotoPerfil = artista.FotoPerfil;
+    artistaExistente.Bio = artista.Bio;
 
+    dal.Atualizar(artistaExistente);
+    return Results.Ok();
+});
 
 app.Run();
