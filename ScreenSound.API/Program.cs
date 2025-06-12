@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using ScreenSound.API.Endpoints;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
 using System.Data.SqlTypes;
@@ -20,111 +21,7 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 
 var app = builder.Build();
 
-#region Endpoints para Artistas
-//Listar Todos os Artistas
-app.MapGet("/Artistas", ([FromServices] DAL<Artista> dal) =>
-{
-    return Results.Ok(dal.Listar());
-});
-
-//Listar Artistas
-app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> dal, string nome) =>
-{
-    var artista = dal.RecuperarPor(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
-    if (artista == null)
-    {
-        return Results.NotFound($"O Artista {nome} não foi encontrado.");
-    }
-    return Results.Ok(artista);
-});
-
-//Cadastrar Artista
-app.MapPost("/Artistas", ([FromServices] DAL<Artista> dal, [FromBody]Artista artista) =>
-{
-    dal.Adicionar(artista);
-    return Results.Ok();
-});
-
-//Deletar Artista
-app.MapDelete("/Artistas/{id}", ([FromServices] DAL<Artista> dal, int id) =>
-{
-    var artista = dal.RecuperarPor(a => a.Id == id);
-    if (artista == null)
-    {
-        return Results.NotFound($"O Artista com ID {id} não foi encontrado.");
-    }
-    dal.Deletar(artista);
-    return Results.Ok();
-});
-
-//Atualizar Artista
-app.MapPut("Artistas", ([FromServices] DAL<Artista> dal, [FromBody] Artista artista) =>
-{
-    var artistaExistente = dal.RecuperarPor(a => a.Id == artista.Id);
-    if (artistaExistente == null)
-    {
-        return Results.NotFound($"O Artista com ID {artista.Id} não foi encontrado.");
-    }
-    artistaExistente.Nome = artista.Nome;
-    artistaExistente.FotoPerfil = artista.FotoPerfil;
-    artistaExistente.Bio = artista.Bio;
-
-    dal.Atualizar(artistaExistente);
-    return Results.Ok();
-});
-#endregion
-
-#region Endpoints para Musicas
-//Listar Todas as Musicas
-app.MapGet("/Musicas", ([FromServices] DAL<Musica> dal) =>
-{
-    return Results.Ok(dal.Listar());
-});
-
-//Listar Musicas
-app.MapGet("/Musicas/{nome}", ([FromServices] DAL<Musica> dal, string nome) =>
-{
-    var musica = dal.RecuperarPor(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
-    if (musica is null)
-    {
-        return Results.NotFound($"A Música {nome} não foi encontrada.");
-    }
-    return Results.Ok(musica);
-});
-
-//Cadastrar Musica
-app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) =>
-{
-    dal.Adicionar(musica);
-    return Results.Ok();
-});
-
-//Deletar Musica
-app.MapDelete("/Musicas/{id}", ([FromServices] DAL<Musica> dal, int id) =>
-{
-    var musica = dal.RecuperarPor(a => a.Id == id);
-    if (musica is null)
-    {
-        return Results.NotFound($"A Música com ID {id} não foi encontrada.");
-    }
-    dal.Deletar(musica);
-    return Results.Ok();
-});
-
-//Atualizar Musica
-app.MapPut("Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) =>
-{
-    var musicaExistente = dal.RecuperarPor(a => a.Id == musica.Id);
-    if (musica is null)
-    {
-        return Results.NotFound($"A Musica com ID {musica.Id} não foi encontradA.");
-    }
-    musicaExistente.Nome = musica.Nome;
-    musicaExistente.AnoLancamento = musica.AnoLancamento;
-
-    dal.Atualizar(musicaExistente);
-    return Results.Ok();
-});
-#endregion
+app.AddEndPointsArtistas(); // Adiciona os endpoints relacionados a Artistas
+app.AddEndPointsMusicas(); // Adiciona os endpoints relacionados a Musicas
 
 app.Run();
