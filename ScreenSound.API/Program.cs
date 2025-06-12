@@ -17,11 +17,17 @@ builder.Services.AddDbContext<ScreenSoundContext>(); // Registra o contexto do b
 builder.Services.AddTransient<DAL<Artista>>(); // Registra a classe DAL para o tipo Artista como um serviço transitório
 builder.Services.AddTransient<DAL<Musica>>(); // Registra a classe DAL para o tipo Musica como um serviço transitório
 
+builder.Services.AddEndpointsApiExplorer(); // Adiciona suporte para explorar os endpoints da API
+builder.Services.AddSwaggerGen(); // Adiciona o Swagger para documentação da API
+
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); // Configura o JsonOptions para ignorar ciclos de referência
 
 var app = builder.Build();
 
 app.AddEndPointsArtistas(); // Adiciona os endpoints relacionados a Artistas
 app.AddEndPointsMusicas(); // Adiciona os endpoints relacionados a Musicas
+
+app.UseSwagger(); // Habilita o Swagger
+app.UseSwaggerUI(); // Habilita a interface do usuário do Swagger
 
 app.Run();
