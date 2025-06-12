@@ -50,17 +50,17 @@ namespace ScreenSound.API.Endpoints
             });
 
             //Atualizar Musica
-            app.MapPut("Musicas", ([FromServices] DAL<Musica> dal, [FromBody] Musica musica) =>
+            app.MapPut("Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
             {
-                var musicaExistente = dal.RecuperarPor(a => a.Id == musica.Id);
-                if (musica is null)
+                var musicaAtualizar = dal.RecuperarPor(a => a.Id == musicaRequestEdit.id);
+                if (musicaAtualizar is null)
                 {
-                    return Results.NotFound($"A Musica com ID {musica.Id} não foi encontradA.");
+                    return Results.NotFound($"A Musica com ID {musicaAtualizar.Id} não foi encontradA.");
                 }
-                musicaExistente.Nome = musica.Nome;
-                musicaExistente.AnoLancamento = musica.AnoLancamento;
+                musicaAtualizar.Nome = musicaRequestEdit.nome;
+                musicaAtualizar.AnoLancamento = musicaRequestEdit.anoLancamento;
 
-                dal.Atualizar(musicaExistente);
+                dal.Atualizar(musicaAtualizar);
                 return Results.Ok();
             });
 
