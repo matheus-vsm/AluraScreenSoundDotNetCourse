@@ -24,5 +24,12 @@ namespace ScreenSound.Banco
                 .UseSqlServer(conctionString)
                 .UseLazyLoadingProxies();
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Configuração para o relacionamento muitos-para-muitos entre Musica e Genero
+            modelBuilder.Entity<Musica>()
+                .HasMany(o => o.Generos)
+                .WithMany(o => o.Musicas);
+        }
     }
 }
