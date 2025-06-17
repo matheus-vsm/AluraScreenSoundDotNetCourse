@@ -3,6 +3,7 @@ using ScreenSound.API.Requests;
 using ScreenSound.API.Response;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
+using ScreenSound.Shared.Modelos.Modelos;
 
 namespace ScreenSound.API.Endpoints
 {
@@ -13,7 +14,14 @@ namespace ScreenSound.API.Endpoints
             //Listar Todas as Musicas
             app.MapGet("/Musicas", ([FromServices] DAL<Musica> dal) =>
             {
-                return Results.Ok(dal.Listar());
+                var musicaList = dal.Listar();
+                if (musicaList is null)
+                {
+                    return Results.NotFound();
+                }
+                var musicaListResponse = EntityListToResponseList(musicaList);
+                return Results.Ok(musicaListResponse);
+                //return Results.Ok(dal.Listar());
             });
 
             //Listar Musicas
@@ -24,7 +32,7 @@ namespace ScreenSound.API.Endpoints
                 {
                     return Results.NotFound($"A Música {nome} não foi encontrada.");
                 }
-                return Results.Ok(musica);
+                return Results.Ok(EntityToResponse(musica));
             });
 
             //Cadastrar Musica
@@ -32,7 +40,9 @@ namespace ScreenSound.API.Endpoints
             {
                 var musica = new Musica(musicaRequest.nome)
                 {
-                    AnoLancamento = musicaRequest.anoLancamento
+                    ArtistaId = musicaRequest.ArtistaId,
+                    AnoLancamento = musicaRequest.anoLancamento,
+                    Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(musicaRequest.Generos) : new List<Genero>()
                 };
                 dal.Adicionar(musica);
                 return Results.Ok();
@@ -53,7 +63,7 @@ namespace ScreenSound.API.Endpoints
             //Atualizar Musica
             app.MapPut("Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequestEdit musicaRequestEdit) =>
             {
-                var musicaAtualizar = dal.RecuperarPor(a => a.Id == musicaRequestEdit.id);
+                var musicaAtualizar = dal.RecuperarPor(a => a.Id == musicaRequestEdit.Id);
                 if (musicaAtualizar is null)
                 {
                     return Results.NotFound($"A Musica com ID {musicaAtualizar.Id} não foi encontradA.");
@@ -64,6 +74,16 @@ namespace ScreenSound.API.Endpoints
                 dal.Atualizar(musicaAtualizar);
                 return Results.Ok();
             });
+        }
+
+        private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos)
+        {
+            return generos.Select(a => RequestToEntity(a)).ToList();
+        }
+
+        private static Genero RequestToEntity(GeneroRequest genero)
+        {
+            return new Genero() { Nome = genero.Nome, Descricao = genero.Descricao };
         }
 
         private static ICollection<MusicaResponse> EntityListToResponseList(IEnumerable<Musica> musicaList)
