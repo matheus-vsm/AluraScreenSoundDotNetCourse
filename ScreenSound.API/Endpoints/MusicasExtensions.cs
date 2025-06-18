@@ -44,7 +44,7 @@ namespace ScreenSound.API.Endpoints
                     AnoLancamento = musicaRequest.anoLancamento,
                     Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(musicaRequest.Generos) : new List<Genero>()
                 };
-                dal.Adicionar(musica);
+                dal.Adicionar(musica); 
                 return Results.Ok();
             });
 
