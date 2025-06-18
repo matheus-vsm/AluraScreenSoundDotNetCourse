@@ -36,15 +36,15 @@ namespace ScreenSound.API.Endpoints
             });
 
             //Cadastrar Musica
-            app.MapPost("/Musicas", ([FromServices] DAL<Musica> dal, [FromBody] MusicaRequest musicaRequest) =>
+            app.MapPost("/Musicas", ([FromServices] DAL<Musica> dalMusica, [FromServices] DAL<Genero> dalGenero, [FromBody] MusicaRequest musicaRequest) =>
             {
                 var musica = new Musica(musicaRequest.nome)
                 {
                     ArtistaId = musicaRequest.ArtistaId,
                     AnoLancamento = musicaRequest.anoLancamento,
-                    Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(musicaRequest.Generos) : new List<Genero>()
+                    Generos = musicaRequest.Generos is not null ? GeneroRequestConverter(musicaRequest.Generos, dalGenero) : new List<Genero>()
                 };
-                dal.Adicionar(musica); 
+                dalMusica.Adicionar(musica);
                 return Results.Ok();
             });
 
@@ -76,9 +76,23 @@ namespace ScreenSound.API.Endpoints
             });
         }
 
-        private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos)
+        private static ICollection<Genero> GeneroRequestConverter(ICollection<GeneroRequest> generos, DAL<Genero> dalGenero)
         {
-            return generos.Select(a => RequestToEntity(a)).ToList();
+            var listaGeneros = new List<Genero>();
+            foreach (var genero in generos)
+            {
+                var generoEntity = RequestToEntity(genero);
+                var generoo = dalGenero.RecuperarPor(g => g.Nome.ToUpper().Equals(genero.Nome.ToUpper()));
+                if (generoo is not null)
+                {
+                    listaGeneros.Add(generoo);
+                }
+                else
+                {
+                    listaGeneros.Add(generoEntity);
+                }
+            }
+            return listaGeneros;
         }
 
         private static Genero RequestToEntity(GeneroRequest genero)

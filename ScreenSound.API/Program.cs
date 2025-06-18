@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using ScreenSound.API.Endpoints;
 using ScreenSound.Banco;
 using ScreenSound.Modelos;
+using ScreenSound.Shared.Modelos.Modelos;
 using System.Data.SqlTypes;
 using System.Text.Json.Serialization;
 
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ScreenSoundContext>(); // Registra o contexto do banco de dados no contêiner de injeção de dependência
 builder.Services.AddTransient<DAL<Artista>>(); // Registra a classe DAL para o tipo Artista como um serviço transitório
 builder.Services.AddTransient<DAL<Musica>>(); // Registra a classe DAL para o tipo Musica como um serviço transitório
+builder.Services.AddTransient<DAL<Genero>>(); // Registra a classe DAL para o tipo Genero como um serviço transitório
 
 builder.Services.AddEndpointsApiExplorer(); // Adiciona suporte para explorar os endpoints da API
 builder.Services.AddSwaggerGen(); // Adiciona o Swagger para documentação da API
@@ -26,6 +28,7 @@ var app = builder.Build();
 
 app.AddEndPointsArtistas(); // Adiciona os endpoints relacionados a Artistas
 app.AddEndPointsMusicas(); // Adiciona os endpoints relacionados a Musicas
+app.AddEndPointsGeneros(); // Adiciona os endpoints relacionados a Generos
 
 app.UseSwagger(); // Habilita o Swagger
 app.UseSwaggerUI(); // Habilita a interface do usuário do Swagger
