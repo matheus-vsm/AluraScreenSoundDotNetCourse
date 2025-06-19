@@ -18,6 +18,7 @@ namespace ScreenSound.Banco
 
         //conexão local
         //private string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ScreenSoundV0;Integrated Security=True;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        //conexão Azure
         private string connectionString = "Server=tcp:screensoundserveralura.database.windows.net,1433;Initial Catalog=ScreenSoundV0;Persist Security Info=False;User ID=matheusadmin;Password=Senha@001;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
