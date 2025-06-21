@@ -1,1 +1,1 @@
-Curso Alura .NET - Persistindo Dados com Entity Framework Core
+Alura - Formação C# Web: crie aplicações usando ASP.NET
