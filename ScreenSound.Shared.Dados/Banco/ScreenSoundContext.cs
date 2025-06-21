@@ -21,8 +21,17 @@ namespace ScreenSound.Banco
         //conexão Azure
         //private string connectionString = "Server=tcp:screensoundserveralura.database.windows.net,1433;Initial Catalog=ScreenSoundV0;Persist Security Info=False;User ID=matheusadmin;Password=Senha@001;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
+        public ScreenSoundContext(DbContextOptions options) : base(options)
+        {
+
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            if (optionsBuilder.IsConfigured)
+            {
+                return; // Se já estiver configurado, não faz nada
+            }
             optionsBuilder
                 .UseSqlServer(connectionString)
                 .UseLazyLoadingProxies();
