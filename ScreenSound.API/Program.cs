@@ -26,7 +26,7 @@ builder.Services.AddTransient<DAL<Artista>>(); // Registra a classe DAL para o t
 builder.Services.AddTransient<DAL<Musica>>(); // Registra a classe DAL para o tipo Musica como um serviço transitório
 builder.Services.AddTransient<DAL<Genero>>(); // Registra a classe DAL para o tipo Genero como um serviço transitório
 
-builder.Services.AddEndpointsApiExplorer(); // Adiciona suporte para explorar os endpoints da API
+builder.Services.AddEndpointsApiExplorer(); // Faz com que o Swagger consiga descobrir automaticamente os endpoints definidos na sua API.
 builder.Services.AddSwaggerGen(); // Adiciona o Swagger para documentação da API
 
 builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options => options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); // Configura o JsonOptions para ignorar ciclos de referência
