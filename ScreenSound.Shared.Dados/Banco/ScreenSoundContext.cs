@@ -26,6 +26,10 @@ namespace ScreenSound.Banco
 
         }
 
+        public ScreenSoundContext()
+        {
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder.IsConfigured)

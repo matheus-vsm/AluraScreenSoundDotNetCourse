@@ -16,6 +16,8 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(); // Adiciona suporte a CORS (Cross-Origin Resource Sharing) para permitir requisições de diferentes origens
+
 builder.Services.AddDbContext<ScreenSoundContext>((options) =>
 {
     options
@@ -39,5 +41,7 @@ app.AddEndPointsGeneros(); // Adiciona os endpoints relacionados a Generos
 
 app.UseSwagger(); // Habilita o Swagger
 app.UseSwaggerUI(); // Habilita a interface do usuário do Swagger
+
+app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials()); // Configura o CORS para permitir qualquer método, cabeçalho e origem
 
 app.Run();

@@ -13,18 +13,24 @@ namespace ScreenSound.API.Endpoints
             //Listar Todos os Artistas
             app.MapGet("/Artistas", ([FromServices] DAL<Artista> dal) =>
             {
-                return Results.Ok(dal.Listar());
+                var listaDeArtistas = dal.Listar();
+                if (listaDeArtistas is null)
+                {
+                    return Results.NotFound();
+                }
+                var listaDeArtistaResponse = EntityListToResponseList(listaDeArtistas);
+                return Results.Ok(listaDeArtistaResponse);
             });
 
             //Listar Artistas
             app.MapGet("/Artistas/{nome}", ([FromServices] DAL<Artista> dal, string nome) =>
             {
                 var artista = dal.RecuperarPor(a => a.Nome.ToUpper().Equals(nome.ToUpper()));
-                if (artista == null)
+                if (artista is null)
                 {
                     return Results.NotFound($"O Artista {nome} não foi encontrado.");
                 }
-                return Results.Ok(artista);
+                return Results.Ok(EntityToResponse(artista));
             });
 
             //Cadastrar Artista

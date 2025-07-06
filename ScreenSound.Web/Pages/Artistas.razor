@@ -1,7 +1,33 @@
 ﻿@page "/Artistas"
+@inject ArtistaAPI artistaAPI
 <h3>Artistas</h3>
-<h4>@Mensagem</h4>
+@if (artistas is not null)
+{
+    foreach (var artista in artistas)
+    {
+        <p>@artista.Nome</p>
+    }
+}
+else
+{
+    <p>se fudeu. @a</p>
+}
 
 @code {
-    public string? Mensagem { get; set; } = "Página de Artistas";
+    private ICollection<ArtistaResponse>? artistas;
+    public string a { get; set; }
+    //quando o componete é inicializado, chama a API para obter os artistas e preencher a coleção
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            artistas = await artistaAPI.GetArtistasAsync();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (use a logging framework or simply output to console for now)
+            a = $"An error occurred: {ex.Message}";
+        }
+    }
+}
 }
