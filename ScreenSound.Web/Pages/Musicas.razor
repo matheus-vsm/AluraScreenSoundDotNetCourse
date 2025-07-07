@@ -1,11 +1,11 @@
-﻿@page "/Artistas"
-@inject ArtistaAPI artistaAPI
-<h3>Artistas</h3>
-@if (artistas is not null)
+﻿@page "/Musicas";
+@inject MusicaAPI musicaAPI;
+<h3>Musicas</h3>
+@if(musicas is not null)
 {
-    foreach (var artista in artistas)
+    foreach (var musica in musicas)
     {
-        <p>@artista.Nome</p>
+        <p>@musica.Nome</p>
     }
 }
 else
@@ -14,14 +14,14 @@ else
 }
 
 @code {
-    private ICollection<ArtistaResponse>? artistas;
+    private ICollection<MusicaResponse>? musicas;
     public string a { get; set; }
     //quando o componete é inicializado, chama a API para obter os artistas e preencher a coleção
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            artistas = await artistaAPI.GetArtistasAsync();
+            musicas = await musicaAPI.GetArtistasAsync();
         }
         catch (Exception ex)
         {
@@ -29,5 +29,4 @@ else
             a = $"An error occurred: {ex.Message}";
         }
     }
-}
 }

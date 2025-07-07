@@ -10,6 +10,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddTransient<ArtistaAPI>();
+builder.Services.AddTransient<MusicaAPI>();
 
 //Registra um HttpClient com nome "API" no sistema de injeção de dependência.
 builder.Services.AddHttpClient("API", client => {
