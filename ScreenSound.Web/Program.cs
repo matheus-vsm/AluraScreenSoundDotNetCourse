@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using MudBlazor.Services;
 using ScreenSound.Web;
 using ScreenSound.Web.Services;
 using System.Reflection.PortableExecutable;
@@ -8,6 +9,8 @@ using System.Runtime.Intrinsics.X86;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
+
+builder.Services.AddMudServices(); // Adiciona os serviços do MudBlazor para UI
 
 builder.Services.AddTransient<ArtistaAPI>();
 builder.Services.AddTransient<MusicaAPI>();
