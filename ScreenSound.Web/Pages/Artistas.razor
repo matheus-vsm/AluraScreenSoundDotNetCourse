@@ -1,12 +1,17 @@
 ﻿@page "/Artistas"
 @inject ArtistaAPI artistaAPI
+
 <h3>Artistas</h3>
 @if (artistas is not null)
 {
-    foreach (var artista in artistas)
-    {
-        <p>@artista.Nome</p>
-    }
+    <MudGrid xs="3">
+        @foreach (var artista in artistas)
+        {
+            <MudItem>
+                <CardArtista Artista="artista" />
+            </MudItem>
+        }
+    </MudGrid>
 }
 else
 {
@@ -29,5 +34,4 @@ else
             a = $"An error occurred: {ex.Message}";
         }
     }
-}
 }
