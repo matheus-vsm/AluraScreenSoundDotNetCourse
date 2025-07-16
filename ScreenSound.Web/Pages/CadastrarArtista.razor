@@ -3,17 +3,13 @@
 @inject NavigationManager navigationManager
 
 <MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
-
     <MudText Class="mt-8" Typo="Typo.h4">Cadastro do Artista</MudText>
-
     <MudForm>
-
         <MudTextField Class="mt-4" T="string" Placeholder="Nome do Artista"
                       Variant="Variant.Outlined"
                       @bind-Value="nome"
                       Required="true"
                       RequiredError="Campo obrigatório." />
-
         <MudTextField Class="mt-4" T="string" Placeholder="Biografia do artista"
                       Variant="Variant.Outlined"
                       @bind-Value="biografia"
@@ -23,15 +19,22 @@
 
         <div class="d-flex align-center justify-space-between mt-4">
             <MudButton Variant="Variant.Filled"
+                       @onclick="Voltar"
+                       Color="Color.Primary"
+                       Class="mr-auto">
+                Voltar Para Artistas
+            </MudButton>
+
+            <MudButton Variant="Variant.Filled"
                        @onclick="Cadastrar"
                        Color="Color.Primary"
                        Class="ml-auto">
                 Cadastrar
             </MudButton>
         </div>
-
     </MudForm>
 </MudPaper>
+
 @code {
     private string? nome;
     private string? biografia;
@@ -40,6 +43,10 @@
     {
         var request = new ArtistaRequest(nome!, biografia!);
         await artistasAPI.AddArtistaAsync(request);
+        navigationManager.NavigateTo("/Artistas");
+    }
+    private void Voltar()
+    {
         navigationManager.NavigateTo("/Artistas");
     }
 }
