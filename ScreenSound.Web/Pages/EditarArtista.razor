@@ -26,6 +26,13 @@
             </MudButton>
 
             <MudButton Variant="Variant.Filled"
+                       @onclick="Atualizar"
+                       Color="Color.Secondary"
+                       Class="mx-auto">
+                Atualizar Informações
+            </MudButton>
+
+            <MudButton Variant="Variant.Filled"
                        @onclick="Deletar"
                        Color="Color.Secondary"
                        Class="ml-auto">
@@ -52,6 +59,12 @@
     private async Task Deletar()
     {
         await artistasAPI.DeleteArtistaAsync(Artista!.Id);
+        navigationManager.NavigateTo("/Artistas");
+    }
+    private async Task Atualizar()
+    {
+        var requestEdit = new ArtistaRequestEdit(Artista!.Id, nome!, biografia!);
+        await artistasAPI.AtualizarArtistaAsync(requestEdit);
         navigationManager.NavigateTo("/Artistas");
     }
     private void Voltar()

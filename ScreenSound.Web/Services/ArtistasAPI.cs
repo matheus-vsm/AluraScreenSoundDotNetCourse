@@ -34,6 +34,12 @@ namespace ScreenSound.Web.Services
             await _httpClient.DeleteAsync($"artistas/{id}");
         }
 
+        public async Task AtualizarArtistaAsync(ArtistaRequestEdit artista)
+        {
+            //Atualiza um artista específico pelo ID.
+            await _httpClient.PutAsJsonAsync($"artistas", artista);
+        }
+
         public async Task<ArtistaResponse?> GetArtistaPorNomeAsync(string nome)
         {
             //Busca um artista específico pelo ID.
