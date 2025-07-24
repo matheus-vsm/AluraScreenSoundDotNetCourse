@@ -36,7 +36,7 @@ namespace ScreenSound.API.Endpoints
             //Cadastrar Artista
             app.MapPost("/Artistas", async ([FromServices] IHostEnvironment env, [FromServices] DAL<Artista> dal, [FromBody] ArtistaRequest artistaRequest) =>
             {
-                var nome = artistaRequest.nome.Trim();
+                var nome = artistaRequest.nome.Replace(" ", "");
                 var imagemArtista = DateTime.Now.ToString("ddMMyyyyhhss") + "." + nome + ".jpeg";
                 var path = Path.Combine(env.ContentRootPath, "wwwroot", "FotosPerfil", imagemArtista); // Define o caminho onde a imagem será salva
 
@@ -44,7 +44,7 @@ namespace ScreenSound.API.Endpoints
                 using FileStream fs = new(path, FileMode.Create);
                 await ms.CopyToAsync(fs);
 
-                var artista = new Artista(artistaRequest.nome, artistaRequest.bio) { FotoPerfil = $"/FotoPerfil/{imagemArtista}" };
+                var artista = new Artista(artistaRequest.nome, artistaRequest.bio) { FotoPerfil = $"/FotosPerfil/{imagemArtista}" };
                 dal.Adicionar(artista);
                 return Results.Ok();
             });

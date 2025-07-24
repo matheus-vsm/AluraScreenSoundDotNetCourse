@@ -10,6 +10,7 @@ namespace ScreenSound.Web.Services
     public class ArtistasAPI
     {
         private readonly HttpClient _httpClient; //É o cliente HTTP usado pra fazer requisições (GET, POST etc.).
+
         public ArtistasAPI(IHttpClientFactory factory) //Usa o IHttpClientFactory para criar um HttpClient já configurado.
         {
             _httpClient = factory.CreateClient("API"); //"API" é o nome do cliente HTTP registrado no Program.cs.

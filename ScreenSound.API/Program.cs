@@ -35,6 +35,14 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 
 var app = builder.Build();
 
+app.UseCors(options =>
+{     options.AllowAnyOrigin() // Permite qualquer origem
+           .AllowAnyMethod() // Permite qualquer método HTTP (GET, POST, PUT, DELETE etc.)
+           .AllowAnyHeader(); // Permite qualquer cabeçalho na requisição
+});
+
+app.UseStaticFiles(); // Habilita o uso de arquivos estáticos, como imagens, CSS e JavaScript
+
 app.AddEndPointsArtistas(); // Adiciona os endpoints relacionados a Artistas
 app.AddEndPointsMusicas();  // Adiciona os endpoints relacionados a Musicas
 app.AddEndPointsGeneros();  // Adiciona os endpoints relacionados a Generos
