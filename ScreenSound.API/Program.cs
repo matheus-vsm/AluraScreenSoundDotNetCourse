@@ -35,12 +35,15 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 
 var app = builder.Build();
 
+// Configura a política de CORS (Cross-Origin Resource Sharing)
 app.UseCors(options =>
 {     options.AllowAnyOrigin() // Permite qualquer origem
            .AllowAnyMethod() // Permite qualquer método HTTP (GET, POST, PUT, DELETE etc.)
            .AllowAnyHeader(); // Permite qualquer cabeçalho na requisição
 });
 
+// Habilita o uso de arquivos estáticos na aplicação
+// Isso torna acessível o conteúdo da pasta "wwwroot" diretamente pela URL
 app.UseStaticFiles(); // Habilita o uso de arquivos estáticos, como imagens, CSS e JavaScript
 
 app.AddEndPointsArtistas(); // Adiciona os endpoints relacionados a Artistas
