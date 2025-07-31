@@ -3,11 +3,11 @@ using System.Net.Http.Json;
 
 namespace ScreenSound.Web.Services
 {
-    public class GeneroAPI
+    public class GenerosAPI
     {
         private readonly HttpClient _httpClient; //É o cliente HTTP usado pra fazer requisições (GET, POST etc.).
 
-        public GeneroAPI(IHttpClientFactory factory) //Usa o IHttpClientFactory para criar um HttpClient já configurado.
+        public GenerosAPI(IHttpClientFactory factory) //Usa o IHttpClientFactory para criar um HttpClient já configurado.
         {
             _httpClient = factory.CreateClient("API"); //"API" é o nome do cliente HTTP registrado no Program.cs.
         }

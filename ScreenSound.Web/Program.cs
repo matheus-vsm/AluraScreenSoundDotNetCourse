@@ -14,6 +14,7 @@ builder.Services.AddMudServices(); // Adiciona os serviços do MudBlazor para UI
 
 builder.Services.AddTransient<ArtistasAPI>();
 builder.Services.AddTransient<MusicasAPI>();
+builder.Services.AddTransient<GenerosAPI>();
 
 //Registra um HttpClient com nome "API" no sistema de injeção de dependência.
 builder.Services.AddHttpClient("API", client => {
