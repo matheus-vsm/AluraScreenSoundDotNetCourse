@@ -12,12 +12,12 @@
                       RequiredError="Campo obrigatório." />
 
         <MudSelect Class="mt-4" T="ArtistaResponse" Label="Artistas"
-                   Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                   Variant="Variant.Outlined" ValueChanged="ArtistaSelecionado" AnchorOrigin="Origin.BottomCenter">
             @if (artistas is not null)
             {
                 foreach (var artista in artistas)
                 {
-                    <MudSelectItem Value="artista"/>
+                    <MudSelectItem Value="artista" />
                 }
             }
         </MudSelect>
@@ -30,12 +30,19 @@
                       RequiredError="Campo obrigatório." />
 
         <MudSelect Class="mt-4" T="GeneroResponse" Label="Gêneros"
-                   Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+                   Variant="Variant.Outlined" ValueChanged="GeneroSelecionado" AnchorOrigin="Origin.BottomCenter">
             @if (generos is not null)
             {
                 foreach (var genero in generos)
                 {
                     <MudSelectItem Value="genero" />
+                }
+            }
+            @if (GenerosSelecionados is not null)
+            {
+                foreach (var genero in GenerosSelecionados)
+                {
+                    <MudAlert Severity="Severity.Info">@(genero.Nome) adicionado como Gênero da Música.</MudAlert>
                 }
             }
         </MudSelect>
@@ -60,10 +67,27 @@
     private string? nome;
     private ICollection<ArtistaResponse>? artistas;
     private ICollection<GeneroResponse>? generos;
+    private List<GeneroResponse> GenerosSelecionados { get; set; } = new();
+    private ArtistaResponse? ArtistaDaMusica { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         artistas = await artistasAPI.GetArtistasAsync();
         generos = await generosAPI.GetGenerosAsync();
+    }
+
+    private void ArtistaSelecionado(ArtistaResponse artista)
+    {
+        ArtistaDaMusica = artista;
+    }
+    private void GeneroSelecionado(GeneroResponse genero)
+    {
+        if (GenerosSelecionados is not null)
+        {
+            if (!GenerosSelecionados.Contains(genero))
+            {
+                GenerosSelecionados.Add(genero);
+            }
+        }
     }
 }
