@@ -1,6 +1,8 @@
 ﻿@page "/CadastrarMusica"
 @inject ArtistasAPI artistasAPI;
 @inject GenerosAPI generosAPI;
+@inject MusicasAPI musicasAPI;
+@inject NavigationManager navigationManager;
 
 <MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
     <MudText Class="mt-8" Typo="Typo.h4">Cadastro de Música</MudText>
@@ -49,6 +51,7 @@
 
         <div class="d-flex align-center justify-space-between mt-4">
             <MudButton Variant="Variant.Filled"
+                       @onclick="Cadastrar"
                        Color="Color.Primary"
                        Class="ml-auto">
                 Cadastrar
@@ -69,6 +72,7 @@
     private ICollection<GeneroResponse>? generos;
     private List<GeneroResponse> GenerosSelecionados { get; set; } = new();
     private ArtistaResponse? ArtistaDaMusica { get; set; }
+    private List<GeneroRequest> GenerosRequest { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,6 +84,7 @@
     {
         ArtistaDaMusica = artista;
     }
+
     private void GeneroSelecionado(GeneroResponse genero)
     {
         if (GenerosSelecionados is not null)
@@ -89,5 +94,19 @@
                 GenerosSelecionados.Add(genero);
             }
         }
+    }
+
+    public async Task Cadastrar()
+    {
+        if (GenerosSelecionados is not null)
+        {
+            foreach(var genero in GenerosSelecionados)
+            {
+                GenerosRequest.Add(new GeneroRequest(genero.Nome, genero.Descricao));
+            }
+        }
+        var musicaRequest = new MusicaRequest(nome!, ArtistaDaMusica!.Id, anoLancamento, GenerosRequest);
+        await musicasAPI.AddMusicaAsync(musicaRequest);
+        navigationManager.NavigateTo("/MusicasPorArtista");
     }
 }

@@ -60,10 +60,12 @@
         await artistasAPI.AddArtistaAsync(request);
         navigationManager.NavigateTo("/Artistas");
     }
+
     private void Voltar()
     {
         navigationManager.NavigateTo("/Artistas");
     }
+
     private async Task UploadFile(IBrowserFile file)
     {
         long maxFileSize = 1024 * 1024 * 5; // 5 MB
