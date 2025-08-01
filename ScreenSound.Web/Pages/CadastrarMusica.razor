@@ -7,7 +7,7 @@
 <MudPaper Class="px-8 pt-2 pb-4 mx-12 my-8" Justify="Justify.Center">
     <MudText Class="mt-8" Typo="Typo.h4">Cadastro de Música</MudText>
     <MudForm>
-        <MudTextField Class="mt-4" T="string" Placeholder="Nome da música/canção"
+        <MudTextField Class="mt-4" T="string" Placeholder="Nome da Música/Canção"
                       @bind-Value="nome"
                       Variant="Variant.Outlined"
                       Required="true"
@@ -24,7 +24,7 @@
             }
         </MudSelect>
 
-        <MudTextField Class="mt-4" Placeholder="Ano de lançamento"
+        <MudTextField Class="mt-4" Placeholder="Ano de Lançamento"
                       @bind-Value="anoLancamento"
                       Variant="Variant.Outlined"
                       Lines="1"
@@ -100,7 +100,7 @@
     {
         if (GenerosSelecionados is not null)
         {
-            foreach(var genero in GenerosSelecionados)
+            foreach (var genero in GenerosSelecionados)
             {
                 GenerosRequest.Add(new GeneroRequest(genero.Nome, genero.Descricao));
             }
