@@ -78,6 +78,9 @@
 
     protected override async Task OnInitializedAsync()
     {
+        artistas = await artistasAPI.GetArtistasAsync();
+        generos = await generosAPI.GetGenerosAsync();
+
         Musica = await musicasAPI.GetMusicaPorNomeAsync(NomeMusica!);
         anoLancamento = Musica!.anoLancamento;
         nome = Musica!.Nome;
