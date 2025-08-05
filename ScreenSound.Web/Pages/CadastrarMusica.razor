@@ -17,7 +17,7 @@
                    Variant="Variant.Outlined" ValueChanged="ArtistaSelecionado" AnchorOrigin="Origin.BottomCenter">
             @if (artistas is not null)
             {
-                foreach (var artista in artistas)
+                @foreach (var artista in artistas)
                 {
                     <MudSelectItem Value="artista" />
                 }
@@ -35,14 +35,14 @@
                    Variant="Variant.Outlined" ValueChanged="GeneroSelecionado" AnchorOrigin="Origin.BottomCenter">
             @if (generos is not null)
             {
-                foreach (var genero in generos)
+                @foreach (var genero in generos)
                 {
                     <MudSelectItem Value="genero" />
                 }
             }
             @if (GenerosSelecionados is not null)
             {
-                foreach (var genero in GenerosSelecionados)
+                @foreach (var genero in GenerosSelecionados)
                 {
                     <MudAlert Severity="Severity.Info">@(genero.Nome) adicionado como Gênero da Música.</MudAlert>
                 }
@@ -79,7 +79,7 @@
         artistas = await artistasAPI.GetArtistasAsync();
         generos = await generosAPI.GetGenerosAsync();
     }
-
+    
     private void ArtistaSelecionado(ArtistaResponse artista)
     {
         ArtistaDaMusica = artista;
