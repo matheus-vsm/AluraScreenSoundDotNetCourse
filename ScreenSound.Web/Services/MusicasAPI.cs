@@ -34,7 +34,7 @@ namespace ScreenSound.Web.Services
         public async Task AtualizarMusicaAsync(MusicaRequestEdit musica)
         {
             //Atualiza um Musica específico pelo ID.
-            await _httpClient.PutAsJsonAsync($"artistas", musica);
+            await _httpClient.PutAsJsonAsync($"musicas", musica);
         }
 
         public async Task<MusicaResponse?> GetMusicaPorNomeAsync(string nome)

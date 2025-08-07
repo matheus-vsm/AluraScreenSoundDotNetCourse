@@ -17,6 +17,19 @@
                       Required="true"
                       RequiredError="Campo obrigatório." />
 
+        <MudImage Class="mt-4" src="@fileImage" />
+        <MudFileUpload T="IBrowserFile" Accept=".jpeg" FilesChanged="UploadFile">
+            <ButtonTemplate>
+                <MudButton HtmlTag="label"
+                           Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.PhotoCamera"
+                           for="@context">
+                    Foto de Perfil
+                </MudButton>
+            </ButtonTemplate>
+        </MudFileUpload>
+
         <div class="d-flex align-center justify-space-between mt-4">
             <MudButton Variant="Variant.Filled"
                        @onclick="Voltar"
@@ -48,12 +61,15 @@
     [Parameter]
     public string? NomeArtista { get; set; }
     public ArtistaResponse? Artista { get; set; }
+    private string? fileImage;
+    private string? fotoPerfil;
 
     protected override async Task OnInitializedAsync()
     {
         Artista = await artistasAPI.GetArtistaPorNomeAsync(NomeArtista!);
         nome = Artista!.Nome;
         biografia = Artista!.Bio;
+        fileImage = Artista!.FotoPerfil!.Contains("Foto") ? $"https://localhost:7122/{Artista!.FotoPerfil}" : "images/cardArtista.png";
     }
 
     private async Task Deletar()
@@ -63,12 +79,27 @@
     }
     private async Task Atualizar()
     {
-        var requestEdit = new ArtistaRequestEdit(Artista!.Id, nome!, biografia!, Artista!.FotoPerfil);
+        var requestEdit = new ArtistaRequestEdit(Artista!.Id, nome!, biografia!, fotoPerfil!);
         await artistasAPI.AtualizarArtistaAsync(requestEdit);
         navigationManager.NavigateTo("/Artistas");
     }
     private void Voltar()
     {
         navigationManager.NavigateTo("/Artistas");
+    }
+    private async Task UploadFile(IBrowserFile file)
+    {
+        long maxFileSize = 1024 * 1024 * 5; // 5 MB
+        var format = "image/jpeg";
+        var resizedImage = await file.RequestImageFileAsync(format, 200, 200); // Resize to 200x200 pixels
+
+        using var fileStream = resizedImage.OpenReadStream();
+        using var memoryStream = new MemoryStream();
+        await fileStream.CopyToAsync(memoryStream);
+
+        var imageUpload = Convert.ToBase64String(memoryStream.ToArray());
+        fileImage = $"data:{format};base64,{imageUpload}";
+
+        fotoPerfil = imageUpload; // Store the base64 string for the API request
     }
 }
