@@ -66,10 +66,11 @@ namespace ScreenSound.API.Endpoints
                 var musicaAtualizar = dal.RecuperarPor(a => a.Id == musicaRequestEdit.Id);
                 if (musicaAtualizar is null)
                 {
-                    return Results.NotFound($"A Musica com ID {musicaAtualizar.Id} não foi encontradA.");
+                    return Results.NotFound($"A Musica com ID {musicaAtualizar!.Id} não foi encontradA.");
                 }
                 musicaAtualizar.Nome = musicaRequestEdit.nome;
                 musicaAtualizar.AnoLancamento = musicaRequestEdit.anoLancamento;
+                musicaAtualizar.ArtistaId = musicaRequestEdit.ArtistaId;
 
                 dal.Atualizar(musicaAtualizar);
                 return Results.Ok();
@@ -107,7 +108,7 @@ namespace ScreenSound.API.Endpoints
 
         private static MusicaResponse EntityToResponse(Musica musica)
         {
-            return new MusicaResponse(musica.Id, musica.Nome!, musica.Artista!.Id, musica.Artista.Nome);
+            return new MusicaResponse(musica.Id, musica.Nome!, musica.Artista!.Id, musica.Artista.Nome, musica.AnoLancamento);
         }
     }
 }
