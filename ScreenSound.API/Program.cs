@@ -16,6 +16,13 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//AULA DE DEPLOY AZURE ASHP.NET CORE BLAZOR
+//builder.Host.ConfigureAppConfiguration(config =>
+//{
+//    var settings = config.Build(); // Constrói a configuração da aplicação
+//    config.AddAzureAppConfiguration("String"); // Adiciona a configuração do Azure App Configuration, permitindo que a aplicação busque suas configurações de lá
+//});
+
 builder.Services.AddCors(); // Adiciona suporte a CORS (Cross-Origin Resource Sharing) para permitir requisições de diferentes origens
 
 builder.Services.AddDbContext<ScreenSoundContext>((options) =>
