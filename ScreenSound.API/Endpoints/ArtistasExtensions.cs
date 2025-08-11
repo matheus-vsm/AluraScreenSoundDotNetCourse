@@ -36,7 +36,7 @@ namespace ScreenSound.API.Endpoints
             //Cadastrar Artista
             app.MapPost("/Artistas", async ([FromServices] IHostEnvironment env, [FromServices] DAL<Artista> dal, [FromBody] ArtistaRequest artistaRequest) =>
             {
-                var caminhoImagem = await SalvarImagemBase64Async(env, artistaRequest.fotoPerfil!, artistaRequest.nome);
+                var caminhoImagem = string.IsNullOrEmpty(artistaRequest.fotoPerfil) ? "images/cardArtista.png" : await SalvarImagemBase64Async(env, artistaRequest.fotoPerfil, artistaRequest.nome);
 
                 var artista = new Artista(artistaRequest.nome, artistaRequest.bio) { FotoPerfil = caminhoImagem };
                 dal.Adicionar(artista);

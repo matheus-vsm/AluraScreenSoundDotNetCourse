@@ -37,6 +37,7 @@ namespace ScreenSound.Banco
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); // A adição dessa linha tem como objetivo permitir que códigos escritos em classes ancestrais continuem sendo executados. Como veremos em breve, essa mudança será importante para usarmos uma biblioteca da Microsoft.
             // Configuração para o relacionamento muitos-para-muitos entre Musica e Genero
             modelBuilder.Entity<Musica>()
                 .HasMany(o => o.Generos)

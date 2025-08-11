@@ -12,9 +12,10 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddMudServices(); // Adiciona os serviços do MudBlazor para UI
 
-builder.Services.AddTransient<ArtistasAPI>();
-builder.Services.AddTransient<MusicasAPI>();
-builder.Services.AddTransient<GenerosAPI>();
+//Foi alterado o tipo de injeção de Transient para Scoped, pois o motivo é conseguir reaproveitar os objetos do mesmo tipo em diferentes páginas e componentes, dentro da mesma requisição. Esse tipo de ciclo de vida dos objetos injetados (a saber, scoped) será fundamental quando começarmos a lidar com estados de autenticação
+builder.Services.AddScoped<ArtistasAPI>();
+builder.Services.AddScoped<MusicasAPI>();
+builder.Services.AddScoped<GenerosAPI>();
 
 //Registra um HttpClient com nome "API" no sistema de injeção de dependência.
 builder.Services.AddHttpClient("API", client => {

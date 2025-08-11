@@ -23,7 +23,17 @@ var builder = WebApplication.CreateBuilder(args);
 //    config.AddAzureAppConfiguration("String"); // Adiciona a configuração do Azure App Configuration, permitindo que a aplicação busque suas configurações de lá
 //});
 
-builder.Services.AddCors(); // Adiciona suporte a CORS (Cross-Origin Resource Sharing) para permitir requisições de diferentes origens
+//builder.Services.AddCors(); // Adiciona suporte a CORS (Cross-Origin Resource Sharing) para permitir requisições de diferentes origens
+
+//Aumentamos a restrição de acesso entre a aplicação Web e a API através da configuração CORS, nomeada abaixo como wasm. O projeto anterior permitia qualquer acesso, enquanto o código abaixo somente permite origens apontadas pelas URLs dos dois projetos.
+builder.Services.AddCors(options => 
+        options.AddPolicy("wasm", policy => 
+        policy.WithOrigins([builder.Configuration["BackendUrl"] ?? "https://localhost:7122",
+            builder.Configuration["FrontendUrl"] ?? "https://localhost:7015"])
+            .AllowAnyMethod()
+            .SetIsOriginAllowed(pol => true)
+            .AllowAnyHeader()
+            .AllowCredentials()));
 
 builder.Services.AddDbContext<ScreenSoundContext>((options) =>
 {
@@ -43,11 +53,13 @@ builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =
 var app = builder.Build();
 
 // Configura a política de CORS (Cross-Origin Resource Sharing)
-app.UseCors(options =>
-{     options.AllowAnyOrigin() // Permite qualquer origem
-           .AllowAnyMethod() // Permite qualquer método HTTP (GET, POST, PUT, DELETE etc.)
-           .AllowAnyHeader(); // Permite qualquer cabeçalho na requisição
-});
+//app.UseCors(options =>
+//{     options.AllowAnyOrigin() // Permite qualquer origem
+//           .AllowAnyMethod() // Permite qualquer método HTTP (GET, POST, PUT, DELETE etc.)
+//           .AllowAnyHeader(); // Permite qualquer cabeçalho na requisição
+//});
+
+app.UseCors("wasm"); // Aplica a política de CORS definida anteriormente, permitindo que o Blazor WebAssembly acesse a API
 
 // Habilita o uso de arquivos estáticos na aplicação
 // Isso torna acessível o conteúdo da pasta "wwwroot" diretamente pela URL
@@ -60,6 +72,6 @@ app.AddEndPointsGeneros();  // Adiciona os endpoints relacionados a Generos
 app.UseSwagger();   // Habilita o Swagger
 app.UseSwaggerUI(); // Habilita a interface do usuário do Swagger
 
-app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials()); // Configura o CORS para permitir qualquer método, cabeçalho e origem
+//app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials()); // Configura o CORS para permitir qualquer método, cabeçalho e origem
 
 app.Run();
